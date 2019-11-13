@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Basic Skills</title>
+<style>
+.column{
+	float: left;
+	width: 50%;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+<div class="row">
+	<div class="column">
+		<form>
+			<input type="radio" name= "objective" value="+" checked onchange="obj0.set(this.value)"> add <br>
+			<input type="radio" name= "objective" value="-" onchange="obj0.set(this.value)"> subtract <br>
+			<input type="radio" name= "objective" value="*" onchange="obj0.set(this.value)"> multiply <br>
+			<input type="radio" name= "objective" value="÷" onchange="obj0.set(this.value)"> divide
+		</form>
+
+		<p id="i"></p>
+
+		<input style=float:left id="answer" type='number' autofocus>
+		<button style=float:left id="button" type='button' onclick="obj1.set(getElementById('answer').value)" >Submit</button>
+	</div>
+	<div class="column">
+		<input id='min' type=number size=5 value=1 min=0 onchange="changemin(this.value)"> : min
+		<br>
+		<input id='max' type=number size=5 value=20 onchange="changemax(this.value)"> : max
+		<br>
+		<br>
+		<input id='negative' type=checkbox onclick="negative= !negative; alg();"> negative 
+		<p id='streak'>Streak: 0</p>
+		<p id='high score'>High Score: 0</p>
+	</div>
+</div>	
+
+<script>
+var input = document.getElementById("answer");
+input.addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+    document.getElementById("button").click();
+  }
+});
+</script>
+
+<script type="text/javascript">
+
+var min=1;
+var max=20;
+var negative=document.getElementById('negative').checked;
+var a;
+var b;
+var fun= function(a,b){return a+b}
+var sign= "+";
+var streak=0;
+var high=0;
+
+function getrandom(){
+	return eval(Math.floor(Math.random()*(max+1-min)))+eval(min);
+}
+
+function alg(){
+	a=getrandom();
+	b=getrandom();
+	if (negative){
+		rand=Math.random();
+		if (rand>.33){a*=-1}
+		if (rand<.66){b*=-1}
+	}
+	if (sign=="-"){if (a<b){
+		var c=b;
+		b=a;
+		a=c;
+	}}
+	if (sign=="÷"){
+		a=a*b;
+	}
+	document.getElementById("answer").value=("");
+	document.getElementById("i").innerHTML = String(a)+" "+sign+" "+String(b)+" = ";
+}
+
+function swtch(objective){
+	if(objective=="+"){fun= function(a,b){return a+b}};
+	if(objective=="-"){fun= function(a,b){return a-b}};
+	if(objective=="*"){fun= function(a,b){return a*b}};
+	if(objective=="÷"){fun= function(a,b){return a/b}};
+	sign=objective;
+	alg();
+}
+
+function check(answer){
+	if(answer==fun(a,b)){
+		yay();
+		alg();
+	}
+	else aww();
+}
+
+function changemin(a){
+	min=eval(a);
+	alg("i");
+}
+
+function changemax(a){
+	max=eval(a);
+	alg("i");
+}
+
+function yay(){
+	alert("Good job! :D")
+	streak++;
+	changestreak();
+}
+
+function aww(){
+	alert("That's not it...\nIt was actually "+String(fun(a,b)))
+	streak=0;
+	changestreak();
+}
+
+function changestreak(){
+	if (high<streak){
+		high=streak;
+		document.getElementById('high score').innerHTML="High Score: "+String(high);
+	}
+	document.getElementById('streak').innerHTML="Streak: "+String(streak);
+}
+
+function Obj(c){
+	var value;
+	this.set =function(v){
+		value=v;
+		c(this);
+	}
+	this.get =function(){
+		return value;
+	}
+}
+
+function c(obj){check(obj.get())}
+function o(obj){swtch(obj.get())}
+
+obj0=new Obj(o);
+obj1=new Obj(c);
+
+alg("i");
+
+</script>
+</body>
+</html>
