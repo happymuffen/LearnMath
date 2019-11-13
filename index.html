@@ -22,9 +22,10 @@
 			<input type="radio" name= "objective" value="+" checked onchange="obj0.set(this.value)"> add <br>
 			<input type="radio" name= "objective" value="-" onchange="obj0.set(this.value)"> subtract <br>
 			<input type="radio" name= "objective" value="*" onchange="obj0.set(this.value)"> multiply <br>
-			<input type="radio" name= "objective" value="÷" onchange="obj0.set(this.value)"> divide
+			<input type="radio" name= "objective" value="Ã·" onchange="obj0.set(this.value)"> divide
 		</form>
 
+		
 		<p id="i"></p>
 
 		<input style=float:left id="answer" type='number' autofocus>
@@ -81,7 +82,7 @@ function alg(){
 		b=a;
 		a=c;
 	}}
-	if (sign=="÷"){
+	if (sign=="Ã·"){
 		a=a*b;
 	}
 	document.getElementById("answer").value=("");
@@ -92,7 +93,7 @@ function swtch(objective){
 	if(objective=="+"){fun= function(a,b){return a+b}};
 	if(objective=="-"){fun= function(a,b){return a-b}};
 	if(objective=="*"){fun= function(a,b){return a*b}};
-	if(objective=="÷"){fun= function(a,b){return a/b}};
+	if(objective=="Ã·"){fun= function(a,b){return a/b}};
 	sign=objective;
 	alg();
 }
